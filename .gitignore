@@ -1,0 +1,65 @@
+# Composer
+/vendor/
+composer.lock
+
+# Node
+/node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Laravel/Package
+.env
+.env.*
+.phpunit.result.cache
+Homestead.yaml
+Homestead.json
+/.phpunit.cache
+/.phpunit.result.cache
+
+# Laravel Storage & Cache (en package usualmente no hay, pero por si acaso)
+storage/
+public/storage
+bootstrap/cache/
+
+# IDEs & OS
+/.idea
+*.sublime-workspace
+*.sublime-project
+*.vscode
+*.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Tests & Coverage
+coverage/
+.phpunit.cache/
+.phpunit.result.cache/
+build/
+builds/
+
+# Docs build cache
+docs/.vitepress/cache/
+docs/.vuepress/dist/
+docs/dist/
+docs/node_modules/
+docs/.vitepress/dist/
+
+# Misc
+*.swp
+*.bak
+*.tmp
+*.orig
+
+# Composer vendor/bin symlinks
+/vendor/bin/
+
+# Laravel Mix
+/public/hot
+/public/mix-manifest.json
+
+# NPM production build
+/public/js
+/public/css
