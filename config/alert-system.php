@@ -24,6 +24,7 @@ return [
     ],
     'envs' => ["production"],
     'layout' => 'layouts.app',
+    'publish_routes' => true,
     'route_prefix' => 'admin/alerts',
     'route_middlewares' => ['web', 'auth'],
     'db-history' => env('ALERT_SYSTEM_DB_HISTORY', true),

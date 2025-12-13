@@ -1,7 +1,7 @@
 {
   "name": "beartropy/alert-system",
   "description": "Reusable Laravel alerting system",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "autoload": {
     "psr-4": {
