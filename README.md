@@ -59,7 +59,6 @@ php artisan vendor:publish --tag=alert-system-config
 ```
 
 > You can define:
-> - Which **Blade layout** to use for the Livewire UI
 > - Which **environments** (`envs`) are allowed to send alerts
 > - Set **telegram token**
 > - Set **telegram proxy**
@@ -210,6 +209,3 @@ $recent = AlertLog::latest()->take(10)->get();
 ## ✅ License
 
 MIT © Beartropy
-
----
-[![Image description](https://i.postimg.cc/SxB7b1T0/beartropy-no-background.png)](https://github.com/beartropy)
