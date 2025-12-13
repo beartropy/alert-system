@@ -13,7 +13,7 @@ use Beartropy\Tables\Classes\Columns\BoolColumn;
 
 class ManageRecipients extends YATBaseTable
 {
-    public $tableName = 'Destinatarios';
+    public $tableName;
     public $model = AlertRecipient::class;
 
     public ?AlertRecipient $selectedRecipient;
@@ -28,13 +28,14 @@ class ManageRecipients extends YATBaseTable
     public $channels;
 
     public function settings(): void {
-        $this->setTitle('Destinatarios');
+        $this->tableName = trans('alert-system::messages.recipients');
+        $this->setTitle(trans('alert-system::messages.recipients'));
         $this->setLayout(config('alert-system.layout'));
         $this->setModalsView('alert-system::livewire.alert-system.modals');
         $this->showCounter(false);
         $this->addButtons([
             [
-                'label' => 'Crear destinatario',
+                'label' => trans('alert-system::messages.actions.create_recipient'),
                 'color' => 'emerald',
                 'action' => 'openNewRecipientModal',
             ],
@@ -46,14 +47,14 @@ class ManageRecipients extends YATBaseTable
 
     public function columns(): array {
         return [
-            Column::make('Id','id')
+            Column::make(trans('alert-system::messages.columns.id'),'id')
                 ->isVisible(false)
                 ->collapseOnMobile(true),
-            Column::make('Tipo','type.name'),
-            Column::make('Canal','channel.name'),
-            Column::make('Direccion','address'),
-            Column::make('Bot','bot'),
-            BoolColumn::make('Activo','is_active'),
+            Column::make(trans('alert-system::messages.columns.type'),'type.name'),
+            Column::make(trans('alert-system::messages.columns.channel'),'channel.name'),
+            Column::make(trans('alert-system::messages.columns.address'),'address'),
+            Column::make(trans('alert-system::messages.columns.bot'),'bot'),
+            BoolColumn::make(trans('alert-system::messages.columns.active'),'is_active'),
             Column::make('#')->customData(function ($row, $value) {
                 return '
                 <span wire:click="editRecipient('.$row->id.')">
@@ -161,9 +162,9 @@ class ManageRecipients extends YATBaseTable
 
     public function options(): array {
         return [
-            "export_selected" => ["label"=>"Export selected rows", "icon"=> "☑️"],
-            "export_filtered" => ["label"=>"Export filtered rows", "icon"=> "🔍"],
-            "export_all" => ["label"=>"Export all rows", "icon"=> "📗"]
+            "export_selected" => ["label"=>trans('alert-system::messages.actions.export_selected'), "icon"=> "☑️"],
+            "export_filtered" => ["label"=>trans('alert-system::messages.actions.export_filtered'), "icon"=> "🔍"],
+            "export_all" => ["label"=>trans('alert-system::messages.actions.export_all'), "icon"=> "📗"]
         ];
     }
 

@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'logs' => 'Logs',
+    'alert_types' => 'Alert Types',
+    'channel_types' => 'Channel Types',
+    'recipients' => 'Recipients',
+    'alert' => 'Alert',
+    'system_alert_notification' => 'System Alert Notification',
+    'columns' => [
+        'id' => 'Id',
+        'type' => 'Type',
+        'channel' => 'Channel',
+        'address' => 'Address',
+        'bot' => 'Bot',
+        'status' => 'Status',
+        'sent_at' => 'Sent At',
+        'name' => 'Name',
+        'active' => 'Active',
+        'subject' => 'Subject',
+        'message' => 'Message',
+        'error' => 'Error',
+        'destination' => 'Destination',
+        'additional_details' => 'Additional Details', 
+    ],
+    'actions' => [
+        'view_more' => 'View more',
+        'create_recipient' => 'Create Recipient',
+        'edit_recipient' => 'Edit Recipient',
+        'delete_recipient' => 'Delete Recipient',
+        'cancel' => 'Cancel',
+        'delete' => 'Delete',
+        'update' => 'Update',
+        'create' => 'Create',
+        'export_selected' => 'Export selected rows',
+        'export_filtered' => 'Export filtered rows',
+        'export_all' => 'Export all rows',
+    ],
+    'messages' => [
+        'confirm_delete_recipient' => 'Are you sure you want to delete this recipient? This action cannot be undone.',
+        'telegram_bot_hint' => 'Only for Telegram channels',
+    ],
+];

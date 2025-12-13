@@ -1,0 +1,43 @@
+<?php
+
+return [
+    'logs' => 'Registros',
+    'alert_types' => 'Tipos de alerta',
+    'channel_types' => 'Tipos de canales',
+    'recipients' => 'Destinatarios',
+    'alert' => 'Alerta',
+    'system_alert_notification' => 'Notificación de alerta del sistema',
+    'columns' => [
+        'id' => 'Id',
+        'type' => 'Tipo',
+        'channel' => 'Canal',
+        'address' => 'Dirección',
+        'bot' => 'Bot',
+        'status' => 'Estado',
+        'sent_at' => 'Enviado',
+        'name' => 'Nombre',
+        'active' => 'Activo',
+        'subject' => 'Asunto',
+        'message' => 'Mensaje',
+        'error' => 'Error',
+        'destination' => 'Destino',
+        'additional_details' => 'Detalles Adicionales',
+    ],
+    'actions' => [
+        'view_more' => 'Ver más',
+        'create_recipient' => 'Crear destinatario',
+        'edit_recipient' => 'Editar destinatario',
+        'delete_recipient' => 'Eliminar destinatario',
+        'cancel' => 'Cancelar',
+        'delete' => 'Eliminar',
+        'update' => 'Actualizar',
+        'create' => 'Crear',
+        'export_selected' => 'Exportar seleccionados',
+        'export_filtered' => 'Exportar filtrados',
+        'export_all' => 'Exportar todo',
+    ],
+    'messages' => [
+        'confirm_delete_recipient' => '¿Estás seguro de que deseas eliminar este destinatario? Esta acción no se puede deshacer.',
+        'telegram_bot_hint' => 'Solo para canales de Telegram',
+    ],
+];

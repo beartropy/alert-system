@@ -19,36 +19,37 @@ use Beartropy\AlertSystem\Models\AlertLog;
 class ManageLogs extends YATBaseTable
 {
 
-    public $tableName = 'Registros';
+    public $tableName;
     public $model = AlertLog::class;
 
     public $selectedLog;
     public $openInfoLogModal = false;
 
     public function settings(): void {
-        $this->setTitle('Registros');
+        $this->tableName = trans('alert-system::messages.logs');
+        $this->setTitle(trans('alert-system::messages.logs'));
         $this->setLayout(config('alert-system.layout'));
         $this->setModalsView('alert-system::livewire.alert-system.modals');
     }
 
     public function columns(): array {
         return [
-            Column::make('Id','id')
+            Column::make(trans('alert-system::messages.columns.id'),'id')
                 ->isVisible(false)
                 ->collapseOnMobile(true),
-            Column::make('Tipo','type'),
-            Column::make('Canal','channel')
+            Column::make(trans('alert-system::messages.columns.type'),'type'),
+            Column::make(trans('alert-system::messages.columns.channel'),'channel')
                 ->collapseOnMobile(true),
-            Column::make('Dirección','address'),
-            Column::make('Bot','bot')
+            Column::make(trans('alert-system::messages.columns.address'),'address'),
+            Column::make(trans('alert-system::messages.columns.bot'),'bot')
                 ->collapseOnMobile(true),
-            Column::make('Estado','status')
+            Column::make(trans('alert-system::messages.columns.status'),'status')
                 ->collapseOnMobile(true),
-            Column::make('Enviado','sent_at')
+            Column::make(trans('alert-system::messages.columns.sent_at'),'sent_at')
                 ->collapseOnMobile(true),
             Column::make('#')->customData(function ($row, $value) {
                 return '<span wire:click="showDetails('.$row->id.')">
-                    <span class="block md:hidden text-blue-400 dark:text-blue-600 cursor-pointer">Ver mas</span>
+                    <span class="block md:hidden text-blue-400 dark:text-blue-600 cursor-pointer">'.trans('alert-system::messages.actions.view_more').'</span>
                     <svg class="w-5 h-5 text-blue-400 dark:text-blue-600 cursor-pointer hidden md:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z"/>
                         <circle cx="12" cy="12" r="3"/>
@@ -64,10 +65,10 @@ class ManageLogs extends YATBaseTable
 
     public function filters(): array {
         return [
-            FilterSelectMagic::make('Estado', 'status'),
-            FilterSelectMagic::make('Tipo'),
-            FilterSelectMagic::make('Canal', 'channel'),
-            FilterDateRange::make('Enviado', 'sent_at'),
+            FilterSelectMagic::make(trans('alert-system::messages.columns.status'), 'status'),
+            FilterSelectMagic::make(trans('alert-system::messages.columns.type'), 'type'),
+            FilterSelectMagic::make(trans('alert-system::messages.columns.channel'), 'channel'),
+            FilterDateRange::make(trans('alert-system::messages.columns.sent_at'), 'sent_at'),
         ];
     }
 
@@ -78,9 +79,9 @@ class ManageLogs extends YATBaseTable
 
     public function options(): array {
         return [
-            "export_selected" => ["label"=>"Export selected rows", "icon"=> "☑️"],
-            "export_filtered" => ["label"=>"Export filtered rows", "icon"=> "🔍"],
-            "export_all" => ["label"=>"Export all rows", "icon"=> "📗"]
+            "export_selected" => ["label"=>trans('alert-system::messages.actions.export_selected'), "icon"=> "☑️"],
+            "export_filtered" => ["label"=>trans('alert-system::messages.actions.export_filtered'), "icon"=> "🔍"],
+            "export_all" => ["label"=>trans('alert-system::messages.actions.export_all'), "icon"=> "📗"]
         ];
     }
 

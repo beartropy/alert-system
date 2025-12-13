@@ -19,7 +19,7 @@ use Beartropy\AlertSystem\Models\AlertType;
 class ManageTypes extends YATBaseTable
 {
 
-    public $tableName = 'Tipos de alerta';
+    public $tableName;
     public $model = AlertType::class;
 
     public ?AlertType $selectedType;
@@ -27,7 +27,8 @@ class ManageTypes extends YATBaseTable
     public $typeName;
 
     public function settings(): void {
-        $this->setTitle('Tipos de alerta');
+        $this->tableName = trans('alert-system::messages.alert_types');
+        $this->setTitle(trans('alert-system::messages.alert_types'));
         $this->setLayout(config('alert-system.layout'));
         $this->setModalsView('alert-system::livewire.alert-system.modals');
         $this->showCounter(false);  
@@ -35,10 +36,10 @@ class ManageTypes extends YATBaseTable
 
     public function columns(): array {
         return [
-            Column::make('Id','id')
+            Column::make(trans('alert-system::messages.columns.id'),'id')
                 ->thStyling('justify-start')
                 ->styling('justify-start'),
-            Column::make('Nombre','name')->thStyling('w-full')->styling('w-full'),
+            Column::make(trans('alert-system::messages.columns.name'),'name')->thStyling('w-full')->styling('w-full'),
             Column::make('#')->customData(function ($row, $value) {
                 return '<span wire:click="editType('.$row->id.')">
                     <svg class="w-5 h-5 text-blue-400 dark:text-blue-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -78,9 +79,9 @@ class ManageTypes extends YATBaseTable
 
     public function options(): array {
         return [
-            "export_selected" => ["label"=>"Export selected rows", "icon"=> "☑️"],
-            "export_filtered" => ["label"=>"Export filtered rows", "icon"=> "🔍"],
-            "export_all" => ["label"=>"Export all rows", "icon"=> "📗"]
+            "export_selected" => ["label"=>trans('alert-system::messages.actions.export_selected'), "icon"=> "☑️"],
+            "export_filtered" => ["label"=>trans('alert-system::messages.actions.export_filtered'), "icon"=> "🔍"],
+            "export_all" => ["label"=>trans('alert-system::messages.actions.export_all'), "icon"=> "📗"]
         ];
     }
 
