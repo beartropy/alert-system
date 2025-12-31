@@ -16,6 +16,18 @@ use Beartropy\Tables\Classes\Filters\FilterDateRange;
 use Beartropy\Tables\Classes\Filters\FilterSelectMagic;
 use Beartropy\AlertSystem\Models\AlertChannel;
 
+/**
+ * Livewire component to manage Alert Channels.
+ *
+ * This component provides a table view of available alert channels with editing capabilities.
+ * It uses the Beartropy Tables package for rendering and filtering.
+ *
+ * @property string $tableName The name of the table displayed
+ * @property string $model The model class associated with the table
+ * @property \Beartropy\AlertSystem\Models\AlertChannel|null $selectedChannel The currently selected channel for editing
+ * @property bool $openEditChannelModal Whether the edit modal is open
+ * @property string $channelName The name of the channel being edited
+ */
 class ManageChannels extends YATBaseTable
 {
 
@@ -26,80 +38,144 @@ class ManageChannels extends YATBaseTable
     public $openEditChannelModal = false;
     public $channelName;
 
-    public function settings(): void {
+    /**
+     * Configure the table settings.
+     *
+     * Sets the table name, title, layout, modal views, and other table-specific configurations.
+     *
+     * @return void
+     */
+    public function settings(): void
+    {
         $this->tableName = trans('alert-system::messages.channel_types');
         $this->setTitle(trans('alert-system::messages.channel_types'));
         $this->setLayout(config('alert-system.layout'));
         $this->setModalsView('alert-system::livewire.alert-system.modals');
-        $this->showCounter(false);  
+        $this->showCounter(false);
     }
 
-    public function columns(): array {
+    /**
+     * Define the columns for the table.
+     *
+     * @return array<int, \Beartropy\Tables\Classes\Columns\Column>
+     */
+    public function columns(): array
+    {
         return [
-            Column::make(trans('alert-system::messages.columns.id'),'id')
+            Column::make(trans('alert-system::messages.columns.id'), 'id')
                 ->thStyling('justify-start')
                 ->styling('justify-start'),
-            Column::make(trans('alert-system::messages.columns.name'),'name')->thStyling('w-full')->styling('w-full'),
+            Column::make(trans('alert-system::messages.columns.name'), 'name')->thStyling('w-full')->styling('w-full'),
             Column::make('#')->customData(function ($row, $value) {
-                return '<span wire:click="editChannel('.$row->id.')">
+                return '<span wire:click="editChannel(' . $row->id . ')">
                     <svg class="w-5 h-5 text-blue-400 dark:text-blue-600 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                     </svg>
                 </span>';
             })
-            ->toHtml()
-            ->thStyling('flex justify-end')
-            ->styling('flex justify-end')
+                ->toHtml()
+                ->thStyling('flex justify-end')
+                ->styling('flex justify-end')
         ];
     }
 
-    public function filters(): array {
+    /**
+     * Define the filters for the table.
+     *
+     * @return array
+     */
+    public function filters(): array
+    {
         return [];
     }
 
-    protected function rules() {
+    /**
+     * Define the validation rules.
+     *
+     * @return array<string, string>
+     */
+    protected function rules()
+    {
         return [
             'channelName' => 'required|string|max:255',
             'selectedChannel.name' => 'required|string|max:255',
         ];
     }
 
-    public function editChannel($id) {
+    /**
+     * Open the modal to edit a channel.
+     *
+     * @param int|string $id The ID of the channel to edit
+     * @return void
+     */
+    public function editChannel($id)
+    {
         $this->selectedChannel = AlertChannel::find($id);
         $this->channelName = $this->selectedChannel->name;
         $this->openEditChannelModal = true;
     }
 
-    public function updateChannel() {
+    /**
+     * Update the selected channel.
+     *
+     * Validates the input and saves the changes to the database.
+     *
+     * @return void
+     */
+    public function updateChannel()
+    {
         $this->validate();
         $this->selectedChannel->name = $this->channelName;
         $this->selectedChannel->save();
         $this->openEditChannelModal = false;
     }
 
-    public function options(): array {
+    /**
+     * Define the bulk actions available for the table.
+     *
+     * @return array<string, array<string, string>>
+     */
+    public function options(): array
+    {
         return [
-            "export_selected" => ["label"=>trans('alert-system::messages.actions.export_selected'), "icon"=> "☑️"],
-            "export_filtered" => ["label"=>trans('alert-system::messages.actions.export_filtered'), "icon"=> "🔍"],
-            "export_all" => ["label"=>trans('alert-system::messages.actions.export_all'), "icon"=> "📗"]
+            "export_selected" => ["label" => trans('alert-system::messages.actions.export_selected'), "icon" => "☑️"],
+            "export_filtered" => ["label" => trans('alert-system::messages.actions.export_filtered'), "icon" => "🔍"],
+            "export_all" => ["label" => trans('alert-system::messages.actions.export_all'), "icon" => "📗"]
         ];
     }
 
-    public function export_all() {
+    /**
+     * Export all data to Excel.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function export_all()
+    {
         $allData = $this->getAllData();
-        return \Maatwebsite\Excel\Facades\Excel::download(new GenericExport($allData,$strip_tags = true), $this->tableName.'.xlsx');
+        return \Maatwebsite\Excel\Facades\Excel::download(new GenericExport($allData, $strip_tags = true), $this->tableName . '.xlsx');
     }
 
-    public function export_filtered() {
+    /**
+     * Export filtered data to Excel.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function export_filtered()
+    {
         $filteredData = $this->getAfterFiltersData();
-        return \Maatwebsite\Excel\Facades\Excel::download(new GenericExport($filteredData, $strip_tags = true), $this->tableName.'.xlsx');
+        return \Maatwebsite\Excel\Facades\Excel::download(new GenericExport($filteredData, $strip_tags = true), $this->tableName . '.xlsx');
     }
 
-    public function export_selected() {
+    /**
+     * Export selected rows to Excel.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|void
+     */
+    public function export_selected()
+    {
         $selected_rows = $this->getSelectedData();
         if ($selected_rows) {
-            return \Maatwebsite\Excel\Facades\Excel::download(new GenericExport($selected_rows, $strip_tags = true), $this->tableName.'.xlsx');
+            return \Maatwebsite\Excel\Facades\Excel::download(new GenericExport($selected_rows, $strip_tags = true), $this->tableName . '.xlsx');
         }
     }
-
 }

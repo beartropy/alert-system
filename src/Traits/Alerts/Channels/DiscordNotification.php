@@ -4,9 +4,23 @@ namespace Beartropy\AlertSystem\Traits\Alerts\Channels;
 
 use Beartropy\AlertSystem\Services\DiscordService;
 
+/**
+ * Trait for sending Discord notifications.
+ */
 trait DiscordNotification
 {
-    public function discordAlert($recipient, $type, $message, $details = [], $subject = null) {
+    /**
+     * Send an alert notification via Discord.
+     *
+     * @param \Beartropy\AlertSystem\Models\AlertRecipient|object $recipient The recipient object containing bot config
+     * @param string $type The alert type
+     * @param string $message The alert message
+     * @param array<string, mixed> $details Additional details to include in the message
+     * @param string|null $subject Optional subject (used in message formatting)
+     * @return void
+     */
+    public function discordAlert($recipient, $type, $message, $details = [], $subject = null)
+    {
 
         $discord = app(DiscordService::class);
 

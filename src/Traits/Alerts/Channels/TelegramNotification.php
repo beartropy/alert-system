@@ -7,9 +7,23 @@ use Illuminate\Support\Facades\Log;
 use Beartropy\AlertSystem\Facades\Alert;
 use Beartropy\AlertSystem\Models\AlertRecipient;
 
+/**
+ * Trait for sending Telegram notifications.
+ */
 trait TelegramNotification
 {
-    public function telegramAlert($recipient, $type, $message, $details = [], $subject = null) {
+    /**
+     * Send an alert notification via Telegram.
+     *
+     * @param \Beartropy\AlertSystem\Models\AlertRecipient|object $recipient The recipient object containing address (chat ID) and bot config
+     * @param string $type The alert type
+     * @param string $message The alert message
+     * @param array<string, mixed> $details Additional details to format in the message
+     * @param string|null $subject Optional subject to bold at the top
+     * @return void
+     */
+    public function telegramAlert($recipient, $type, $message, $details = [], $subject = null)
+    {
         $telegram = app(TelegramService::class);
 
         $text = "<b>" . ($subject) . "</b>\n" . $message . "\n\n";

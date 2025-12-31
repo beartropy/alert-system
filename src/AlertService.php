@@ -11,6 +11,22 @@ class AlertService
 {
     use AllChannelsTraits;
 
+    /**
+     * Send an alert to configured recipients based on type.
+     *
+     * This method retrieves active recipients for the given alert type, checks for cooldowns,
+     * and dispatches alerts via supported channels (Mail, Telegram, Discord).
+     * It also handles logging and database recording of the alert attempt.
+     *
+     * @param string $type The type of alert (e.g., 'system_error', 'user_signup')
+     * @param string $message The main message body of the alert
+     * @param array<string, mixed> $details Additional context or data for the alert
+     * @param array<string, mixed> $options Custom options (e.g., 'mailSubject', 'cooldown')
+     * @return void
+     *
+     * @throws \InvalidArgumentException If an unsupported channel is encountered
+     * @throws \Throwable If sending fails
+     */
     public function send(string $type, string $message, array $details = [], array $options = []): void
     {
         if (!$this->isEnvironmentAllowed()) {
@@ -63,11 +79,26 @@ class AlertService
         }
     }
 
+    /**
+     * Check if the current environment is allowed to send alerts.
+     *
+     * @return bool True if the current environment is in the allowed list
+     */
     protected function isEnvironmentAllowed(): bool
     {
         return in_array(app()->environment(), config('alert-system.envs', []));
     }
 
+    /**
+     * Check if an alert is currently in cooldown for a specific recipient.
+     *
+     * @param string $type Alert type
+     * @param string $address Recipient address
+     * @param string $channel Channel name
+     * @param string $message Alert message
+     * @param int $cooldown Cooldown duration in minutes
+     * @return bool True if a successfully sent alert matching criteria exists within the cooldown period
+     */
     protected function isInCooldown(string $type, string $address, string $channel, string $message, int $cooldown): bool
     {
         if ($cooldown <= 0) {
@@ -83,6 +114,18 @@ class AlertService
             ->exists();
     }
 
+    /**
+     * Log that an alert was skipped due to cooldown.
+     *
+     * @param AlertRecipient $recipient The recipient object
+     * @param string $type Alert type
+     * @param string $message Alert message
+     * @param array<string, mixed> $details Alert details
+     * @param string $subject Alert subject
+     * @param array<int, array<string, string>> $logRecipients List of all recipients for logging context
+     * @param int $cooldown Cooldown minutes
+     * @return void
+     */
     protected function logCooldownSkip($recipient, $type, $message, $details, $subject, $logRecipients, $cooldown): void
     {
         Log::channel(config('alert-system.logging.channel', 'stack'))
@@ -99,6 +142,18 @@ class AlertService
             ]);
     }
 
+    /**
+     * Dispatch the alert to the specific channel.
+     *
+     * @param AlertRecipient $recipient
+     * @param string $type
+     * @param string $message
+     * @param array<string, mixed> $details
+     * @param string $subject
+     * @return void
+     *
+     * @throws \InvalidArgumentException If channel is not supported
+     */
     protected function sendAlertViaChannel($recipient, string $type, string $message, array $details, string $subject): void
     {
         $details = $this->flattenAlertDetails($details);
@@ -110,6 +165,13 @@ class AlertService
         };
     }
 
+    /**
+     * Record the alert attempt in the database.
+     *
+     * @param bool $success Whether the alert was sent successfully
+     * @param array<string, mixed> $info Information about the alert (recipient, type, details, etc.)
+     * @return void
+     */
     public function handleDB(bool $success, array $info): void
     {
         if (!config('alert-system.db-history', false)) {
@@ -131,6 +193,13 @@ class AlertService
         ]);
     }
 
+    /**
+     * Log the alert attempt result.
+     *
+     * @param bool $success Whether the alert was sent successfully
+     * @param array<string, mixed> $info Information about the alert
+     * @return void
+     */
     public function handleLog(bool $success, array $info): void
     {
         if (!config('alert-system.logging.enabled', true)) {
