@@ -1,0 +1,32 @@
+# Beartropy Alert System - Cursor Rules
+
+## Project Context
+This project uses **Beartropy Alert System**, a multi-channel alerting package for Laravel.
+
+## Sending Alerts
+
+```php
+use Beartropy\AlertSystem\Facades\Alert;
+
+Alert::send('alert_type', 'Message text', ['key' => 'value'], ['mailSubject' => 'Subject']);
+```
+
+## Channels
+- **Mail**: Standard Laravel Mailable
+- **Telegram**: Bot API with chat ID
+- **Discord**: Webhook URL
+
+## Management Components
+```blade
+@livewire('alert-system.manage-types')
+@livewire('alert-system.manage-channels')
+@livewire('alert-system.manage-recipients')
+@livewire('alert-system.manage-logs')
+```
+
+## Best Practices
+- Create alert types for each category: "server_error", "payment_failed", "user_registered"
+- Use cooldown to prevent alert storms: `config('alert-system.cooldown_minutes')`
+- Set `envs` to prevent accidental alerts in development
+- Pass structured `$details` array for rich alert content
+- Use `mailSubject` option for meaningful email subjects

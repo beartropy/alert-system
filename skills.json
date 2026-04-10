@@ -1,0 +1,5 @@
+{
+    "prefix": "bt-alert-system",
+    "excludeSkills": [],
+    "componentDocs": "docs/llms"
+}
